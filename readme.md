@@ -4,7 +4,8 @@
 > Please credit the **original upstream project and author** if you use or share this code.
 >
 > **Fork maintainer:** **reckless**  
-> **How this fork was made:** **reckless used [Grok](https://grok.com) (xAI) to modify the project — no manual coding by reckless.**  
+> **How this fork was made:** **reckless used [Grok](https://grok.com) (xAI) to modify the project — no manual coding by reckless.**
+> I WANT EVERYONE TO BE AWARE THIS WAS FULLY MODDED BY GROK BUILD AND I TAKE NO CREDIT IN ITS CODING ALL CREDIT SHOULD GO TO THOMAS AND ME USING AI LOL  
 >
 > **Full details:** [ATTRIBUTION.md](ATTRIBUTION.md)
 
