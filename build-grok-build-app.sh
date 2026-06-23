@@ -8,6 +8,7 @@ NATIVE_DIR="$SCRIPT_DIR/grok-build-native"
 DIST_APP="$SCRIPT_DIR/dmg-builder/dist/${APP_NAME}.app"
 MACOS_DIR="$DIST_APP/Contents/MacOS"
 CONTENTS_DIR="$DIST_APP/Contents"
+RESOURCES_DIR="$CONTENTS_DIR/Resources"
 BUILD_DIR="$NATIVE_DIR/build"
 BINARY_NAME="GrokBuild"
 ICON_SRC="$SCRIPT_DIR/grok-build-native/Assets/grok-build-icon.icns"
@@ -30,12 +31,12 @@ swiftc -O -sdk "$SDK" \
     -framework AppKit -framework CoreGraphics -framework CoreText -framework Carbon
 
 rm -rf "$DIST_APP"
-mkdir -p "$MACOS_DIR"
+mkdir -p "$MACOS_DIR" "$RESOURCES_DIR"
 cp "$BUILD_DIR/$BINARY_NAME" "$MACOS_DIR/$BINARY_NAME"
 chmod +x "$MACOS_DIR/$BINARY_NAME"
 
 if [[ -f "$ICON_SRC" ]]; then
-    cp "$ICON_SRC" "$CONTENTS_DIR/icon.icns"
+    cp "$ICON_SRC" "$RESOURCES_DIR/icon.icns"
 fi
 
 if [[ -z "${PYTHON_BIN:-}" || ! -x "${PYTHON_BIN}" ]]; then
@@ -70,7 +71,8 @@ plist = {
         "Grok Build added by reckless using Grok (xAI). See ATTRIBUTION.md."
     ),
 }
-if (contents / "icon.icns").exists():
+resources = contents / "Resources"
+if (resources / "icon.icns").exists():
     plist["CFBundleIconFile"] = "icon.icns"
 
 with open(contents / "Info.plist", "wb") as handle:
