@@ -3,7 +3,8 @@ import AppKit
 /// Terminal view that reliably accepts keyboard, paste, and dictation input.
 final class GrokTerminalView: LocalProcessTerminalView {
     private var scrollAccumulator: CGFloat = 0
-    private let scrollLineThreshold: CGFloat = 0.75
+    private let scrollLineThreshold: CGFloat = 5.0
+    private let alternateScrollLineThreshold: CGFloat = 12.0
 
     override func mouseDown(with event: NSEvent) {
         window?.makeFirstResponder(self)
@@ -16,13 +17,13 @@ final class GrokTerminalView: LocalProcessTerminalView {
 
         if terminal.isCurrentBufferAlternate {
             scrollAccumulator += delta
-            while scrollAccumulator >= scrollLineThreshold {
+            while scrollAccumulator >= alternateScrollLineThreshold {
                 sendKeyUp()
-                scrollAccumulator -= scrollLineThreshold
+                scrollAccumulator -= alternateScrollLineThreshold
             }
-            while scrollAccumulator <= -scrollLineThreshold {
+            while scrollAccumulator <= -alternateScrollLineThreshold {
                 sendKeyDown()
-                scrollAccumulator += scrollLineThreshold
+                scrollAccumulator += alternateScrollLineThreshold
             }
             return
         }
@@ -50,13 +51,13 @@ final class GrokTerminalView: LocalProcessTerminalView {
 
     private func scrollingVelocity(for delta: CGFloat) -> Int {
         if delta > 9 {
-            return max(terminal.rows, 20)
+            return max(terminal.rows / 2, 5)
         }
         if delta > 5 {
-            return 10
+            return 4
         }
         if delta > 1 {
-            return 3
+            return 2
         }
         return 1
     }

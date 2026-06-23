@@ -23,7 +23,9 @@ from AppKit import (
     NSMakeRect,
     NSMenu,
     NSMenuItem,
+    NSModalResponseOK,
     NSNotificationCenter,
+    NSOpenPanel,
     NSSize,
     NSStatusBar,
     NSVariableStatusItemLength,
@@ -609,6 +611,76 @@ class AppDelegate(NSObject):
         if url is None:
             return False
         return NSWorkspace.sharedWorkspace().openURL_(url)
+
+    def _present_file_open_panel(
+        self,
+        web_view,
+        allow_multiple,
+        allow_directories,
+        completion_handler=None,
+        result_listener=None,
+    ):
+        panel = NSOpenPanel.openPanel()
+        panel.setAllowsMultipleSelection_(allow_multiple)
+        panel.setCanChooseDirectories_(allow_directories)
+        panel.setCanChooseFiles_(True)
+        panel.setResolvesAliases_(True)
+
+        NSApp.activateIgnoringOtherApps_(True)
+        parent_window = web_view.window() if web_view is not None else self.window
+
+        def finish_with_urls(urls):
+            if completion_handler is not None:
+                completion_handler(urls)
+                return
+            if result_listener is None:
+                return
+            if not urls:
+                result_listener.cancel()
+                return
+            paths = [url.path() for url in urls if url is not None]
+            if allow_multiple:
+                result_listener.chooseFilenames_(paths)
+            elif paths:
+                result_listener.chooseFilename_(paths[0])
+
+        def handle_result(result):
+            if result == NSModalResponseOK:
+                finish_with_urls(panel.URLs())
+            else:
+                finish_with_urls(None)
+
+        if parent_window is not None:
+            panel.beginSheetModalForWindow_completionHandler_(parent_window, handle_result)
+        else:
+            panel.beginWithCompletionHandler_(handle_result)
+
+    def webView_runOpenPanelWithParameters_initiatedByFrame_completionHandler_(
+        self,
+        web_view,
+        parameters,
+        frame,
+        completion_handler,
+    ):
+        self._present_file_open_panel(
+            web_view,
+            parameters.allowsMultipleSelection(),
+            parameters.allowsDirectories(),
+            completion_handler=completion_handler,
+        )
+
+    def webView_runOpenPanelForFileButtonWithResultListener_allowMultipleFiles_(
+        self,
+        web_view,
+        result_listener,
+        allow_multiple_files,
+    ):
+        self._present_file_open_panel(
+            web_view,
+            allow_multiple_files,
+            False,
+            result_listener=result_listener,
+        )
 
     def webView_decidePolicyForNavigationAction_decisionHandler_(
         self,

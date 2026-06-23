@@ -19,3 +19,4 @@
 | 0.0.45<br>June 2026 | Overlay window remembers size and position <br> after hiding to the menu bar and reopening. |
 | 0.0.46<br>June 2026 | Grok Build: paste, copy, select-all, and <br> voice dictation in the terminal window. |
 | 0.0.47<br>June 2026 | Grok Build: trackpad and mouse-wheel scrolling <br> in the terminal (including agent TUI). |
+| 0.0.48<br>June 2026 | Grok Overlay file-upload button opens the <br> system picker; Grok Build scroll speed tuned. |
