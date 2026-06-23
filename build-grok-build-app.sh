@@ -10,7 +10,7 @@ MACOS_DIR="$DIST_APP/Contents/MacOS"
 CONTENTS_DIR="$DIST_APP/Contents"
 BUILD_DIR="$NATIVE_DIR/build"
 BINARY_NAME="GrokBuild"
-ICON_SRC="$SCRIPT_DIR/macos_grok_overlay/logo/icon.icns"
+ICON_SRC="$SCRIPT_DIR/grok-build-native/Assets/grok-build-icon.icns"
 SDK=$(xcrun --show-sdk-path)
 
 if [[ ! -d "$NATIVE_DIR/vendor/SwiftTerm" ]]; then
