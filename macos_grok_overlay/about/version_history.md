@@ -18,3 +18,4 @@
 | 0.0.44<br>June 2026 | External links open in the default browser <br> instead of tiny in-app popup windows. |
 | 0.0.45<br>June 2026 | Overlay window remembers size and position <br> after hiding to the menu bar and reopening. |
 | 0.0.46<br>June 2026 | Grok Build: paste, copy, select-all, and <br> voice dictation in the terminal window. |
+| 0.0.47<br>June 2026 | Grok Build: trackpad and mouse-wheel scrolling <br> in the terminal (including agent TUI). |
